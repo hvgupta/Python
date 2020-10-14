@@ -1,0 +1,15 @@
+print("what do you want to be reversed")
+x = str(input())
+a = []
+for i in x:
+    a.append(i)
+a.reverse()
+a = str(a)
+a = a.replace("[", "")
+a = a.replace("]", "")
+a = a.replace(",", "")
+a = a.replace(" ", "{}")
+a = a.replace("'", "")
+a = a.replace("{}{}{}"," ")
+a = a.replace("{}", "")
+print(a)

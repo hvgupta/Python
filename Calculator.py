@@ -74,8 +74,9 @@ for i in x.split(' '):
         modifiedx += list(i)
 del i
 
-while True:
-    while len(modifiedx) != 0:
+while len(modifiedx) != 1:
+    while len(modifiedx) != 1:
+
         newx = []
         location_of_bracket()
         location_of_divide()
@@ -89,16 +90,14 @@ while True:
             for g in powerindex:
                 n = powerindex[0]
                 ans = modifiedx[n-1] ** modifiedx[n+1]
-                print(modifiedx)
                 modifiedx[n] = ans
                 del modifiedx[n-1]
                 del modifiedx[n]
-                print(modifiedx)
                 if modifiedx[n-2] == "(" and modifiedx[n] == ")":
                     del modifiedx[n]
                     del modifiedx[n-2]
-                print(modifiedx)
                 location_of_power()
+                del g
 
 
         elif len(multiplyindex) != 0 and modifiedx[multiplyindex[0]-1] != ")":
@@ -107,58 +106,48 @@ while True:
             for g in multiplyindex:
                 n = multiplyindex[0]
                 ans = modifiedx[n-1] * modifiedx[n+1]
-                print(modifiedx)
                 modifiedx[n] = ans
                 del modifiedx[n-1]
                 del modifiedx[n]
-                print(modifiedx)
                 if modifiedx[n-2] == "(" and modifiedx[n] == ")":
                     del modifiedx[n]
                     del modifiedx[n-2]
-                print(modifiedx)
                 location_of_multiply()
+                del g
 
         elif len(divideindex) != 0 and modifiedx[divideindex[0]-1] != ")":
-            del g
             location_of_divide()
             for g in divideindex:
                 n = divideindex[0]
                 ans = modifiedx[n-1] / modifiedx[n+1]
-                print(modifiedx)
                 modifiedx[n] = ans
                 del modifiedx[n-1]
                 del modifiedx[n]
-                print(modifiedx)
                 if modifiedx[n-2] == "(" and modifiedx[n] == ")":
                     del modifiedx[n]
                     del modifiedx[n-2]
-                print(modifiedx)
                 location_of_divide()
+                del g
 
         elif len(plusindex) != 0 and modifiedx[plusindex[0]-1] != ")":
-            del g
             location_of_plus()
             for g in plusindex:
                 n = plusindex[0]
                 ans = modifiedx[n-1] + modifiedx[n+1]
-                print(modifiedx)
                 modifiedx[n] = ans
                 del modifiedx[n-1]
                 del modifiedx[n]
-                print(modifiedx)
                 if modifiedx[n-2] == "(" and modifiedx[n] == ")":
                     del modifiedx[n]
                     del modifiedx[n-2]
-                print(modifiedx)
                 location_of_plus()
+                del g
 
         elif len(minusindex) != 0 and modifiedx[minusindex[0]-1] != ")":
-            del g
             location_of_minus()
             for g in minusindex:
                 n = minusindex[0]
                 ans = modifiedx[n-1] + modifiedx[n+1]
-                print(modifiedx)
                 modifiedx[n] = ans
                 del modifiedx[n-1]
                 del modifiedx[n]
@@ -166,8 +155,8 @@ while True:
                     del modifiedx[n]
                     del modifiedx[n-2]
                 location_of_minus()
-            break
+                del g
 modifiedx = str(modifiedx)
 modifiedx = modifiedx.replace("[","")
-modifiedx = modifiedx.replace("[","")
+modifiedx = modifiedx.replace("]","")
 print(modifiedx)

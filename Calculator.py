@@ -63,99 +63,150 @@ def location_of_power():
         Index = Index + 1
     del i 
 
+def Truemaker():
+    global repeatedpower
+    global repeatedmultiply
+    global repeateddivide
+    global repeatedadd
+    global repeatedminus
+    repeatedpower = True 
+    repeatedmultiply = True
+    repeateddivide = True
+    repeatedadd = True
+    repeatedminus = True 
+
 #this is the main part of the calculator
 x = input("Your input can include operations too like '( x + y ) ( x * y ) - ( z / a ) + ( x ^ 2 )'\n")
 modifiedx = []
+oldx = []
 for i in x.split(' '):
     try:
-        j = int(i)
+        j = float(i)
         modifiedx.append(j)
+        oldx.append(j)
     except:
         modifiedx += list(i)
+        oldx += list(i)
 del i
+
+Truemaker()
+powerindex = []
+multiplyindex = []
+divideindex = []
+plusindex = []
+minusindex  = []
 
 while len(modifiedx) != 1:
     while len(modifiedx) != 1:
 
-        newx = []
         location_of_bracket()
-        location_of_divide()
-        location_of_minus()
-        location_of_multiply()
-        location_of_plus()
-        location_of_power()
 
+        if len(powerindex) == 0 and '^' in modifiedx and len(backwardbracketindex) == 0 and repeatedpower == True or '^' in modifiedx and repeatedpower == True and modifiedx.index(')') > modifiedx.index('^') or oldx != modifiedx and '^' in modifiedx and repeatedpower == True and modifiedx.index(')') > modifiedx.index('^'):
+            location_of_power()
+            location_of_bracket()
+            repeatedpower = False
 
-        if len(powerindex) != 0 and modifiedx[powerindex[0]-1] != ")":
-            for g in powerindex:
-                n = powerindex[0]
-                ans = modifiedx[n-1] ** modifiedx[n+1]
-                modifiedx[n] = ans
-                del modifiedx[n-1]
-                del modifiedx[n]
-                if modifiedx[n-2] == "(" and modifiedx[n] == ")":
-                    del modifiedx[n]
-                    del modifiedx[n-2]
-                location_of_power()
-                del g
+        elif len(powerindex) != 0 and '^' in modifiedx and modifiedx[powerindex[0]-1] != ")":
+            counter = 0
+            for a in powerindex:
+                if modifiedx[a-counter-1] == ")":
+                    Truemaker()
+                    break
+                ans = float(modifiedx[(a-counter)-1] ** modifiedx[(a-counter)+1])
+                modifiedx[a-counter] = ans
+                del modifiedx[(a-counter)-1]
+                del modifiedx[a-counter]
+                if modifiedx[(a-counter)-2] == "(" and modifiedx[a-counter] == ")":
+                    del modifiedx[a-counter]
+                    del modifiedx[(a-counter)-2]
+                    counter = counter + 2
+                counter = counter + 2
 
-
-        elif len(multiplyindex) != 0 and modifiedx[multiplyindex[0]-1] != ")":
+        elif len(multiplyindex) == 0 and '*' in modifiedx and len(backwardbracketindex) == 0 and repeatedmultiply == True or '*' in modifiedx and repeatedmultiply == True and modifiedx.index(')') > modifiedx.index('*') or oldx != modifiedx and '*' in modifiedx and repeatedmultiply == True and modifiedx.index(')') > modifiedx.index('*'):
             location_of_multiply()
             location_of_bracket()
-            for g in multiplyindex:
-                n = multiplyindex[0]
-                ans = modifiedx[n-1] * modifiedx[n+1]
-                modifiedx[n] = ans
-                del modifiedx[n-1]
-                del modifiedx[n]
-                if modifiedx[n-2] == "(" and modifiedx[n] == ")":
-                    del modifiedx[n]
-                    del modifiedx[n-2]
-                location_of_multiply()
-                del g
+            repeatedmultiply = False
 
-        elif len(divideindex) != 0 and modifiedx[divideindex[0]-1] != ")":
+        elif len(multiplyindex) != 0 and '*' in modifiedx:
+            counter = 0
+            for b in multiplyindex:
+                if modifiedx[b-counter-1] == ")":
+                    Truemaker()
+                    break
+                ans = float(modifiedx[(b-counter)-1] * modifiedx[(b-counter)+1])
+                modifiedx[b-counter] = ans
+                del modifiedx[(b-counter)-1]
+                del modifiedx[b-counter]
+                if modifiedx[(b-counter)-2] == "(" and modifiedx[b-counter] == ")":
+                    del modifiedx[b-counter]
+                    del modifiedx[(b-counter)-2]
+                    counter = counter + 2
+                counter = counter + 2
+        
+        elif len(divideindex) == 0 and '/' in modifiedx and len(backwardbracketindex) == 0 and repeateddivide == True or '/' in modifiedx and repeateddivide == True and modifiedx.index(')') > modifiedx.index('/') or oldx != modifiedx and '/' in modifiedx and repeateddivide == True and modifiedx.index(')') > modifiedx.index('/'):
             location_of_divide()
-            for g in divideindex:
-                n = divideindex[0]
-                ans = modifiedx[n-1] / modifiedx[n+1]
-                modifiedx[n] = ans
-                del modifiedx[n-1]
-                del modifiedx[n]
-                if modifiedx[n-2] == "(" and modifiedx[n] == ")":
-                    del modifiedx[n]
-                    del modifiedx[n-2]
-                location_of_divide()
-                del g
+            location_of_bracket()
+            repeateddivide = False
 
-        elif len(plusindex) != 0 and modifiedx[plusindex[0]-1] != ")":
+        elif len(divideindex) != 0 and '/' in modifiedx:
+            counter = 0
+            for c in divideindex:
+                if modifiedx[c-counter-1] == ")":
+                    Truemaker()
+                    break
+                ans = float(modifiedx[(c-counter)-1] / modifiedx[(c-counter)+1])
+                modifiedx[c-counter] = ans
+                del modifiedx[(c-counter)-1]
+                del modifiedx[c-counter]
+                if modifiedx[(c-counter)-2] == "(" and modifiedx[c-counter] == ")":
+                    del modifiedx[c-counter]
+                    del modifiedx[(c-counter)-2]
+                    counter = counter + 2
+                counter = counter + 2
+
+        elif len(plusindex) == 0 and '+' in modifiedx and len(backwardbracketindex) == 0 and repeatedadd == True or '+' in modifiedx and repeatedadd == True and modifiedx.index(')') > modifiedx.index('+') or oldx != modifiedx and '+' in modifiedx and repeatedadd == True and modifiedx.index(')') > modifiedx.index('+'):
             location_of_plus()
-            for g in plusindex:
-                n = plusindex[0]
-                ans = modifiedx[n-1] + modifiedx[n+1]
-                modifiedx[n] = ans
-                del modifiedx[n-1]
-                del modifiedx[n]
-                if modifiedx[n-2] == "(" and modifiedx[n] == ")":
-                    del modifiedx[n]
-                    del modifiedx[n-2]
-                location_of_plus()
-                del g
+            location_of_bracket()
+            repeatedadd = False
 
-        elif len(minusindex) != 0 and modifiedx[minusindex[0]-1] != ")":
+        elif len(plusindex) != 0 and '+' in modifiedx:
+            counter = 0
+            for d in plusindex:
+                if modifiedx[d-counter-1] == ")":
+                    Truemaker()
+                    break
+                ans = float(modifiedx[(d-counter)-1] + modifiedx[(d-counter)+1])
+                modifiedx[d-counter] = ans
+                del modifiedx[(d-counter)-1]
+                del modifiedx[d-counter]
+                if modifiedx[(d-counter)-2] == "(" and modifiedx[d-counter] == ")":
+                    del modifiedx[d-counter]
+                    del modifiedx[(d-counter)-2]
+                    counter = counter + 2
+                counter = counter + 2
+        
+        elif len(minusindex) == 0 and '-' in modifiedx and len(backwardbracketindex) == 0 and repeatedminus == True or '-' in modifiedx and repeatedminus == True and modifiedx.index(')') > modifiedx.index('-') or oldx != modifiedx and '-' in modifiedx and repeatedminus == True and modifiedx.index(')') > modifiedx.index('-'):
             location_of_minus()
-            for g in minusindex:
-                n = minusindex[0]
-                ans = modifiedx[n-1] + modifiedx[n+1]
-                modifiedx[n] = ans
-                del modifiedx[n-1]
-                del modifiedx[n]
-                if modifiedx[n-2] == "(" and modifiedx[n] == ")":
-                    del modifiedx[n]
-                    del modifiedx[n-2]
-                location_of_minus()
-                del g
+            location_of_bracket()
+            repeatedminus = False
+
+        elif len(minusindex) != 0 and '-' in modifiedx:
+            counter = 0
+            for e in minusindex:
+                if modifiedx[e-counter-1] == ")":
+                    Truemaker()
+                    break
+                ans = float(modifiedx[(e-counter)-1] - modifiedx[(e-counter)+1])
+                modifiedx[e-counter] = ans
+                del modifiedx[(e-counter)-1]
+                del modifiedx[e-counter]
+                if modifiedx[(e-counter)-2] == "(" and modifiedx[e-counter] == ")":
+                    del modifiedx[e-counter]
+                    del modifiedx[(e-counter)-2]
+                    counter = counter + 2
+                counter = counter + 2
+
+
 modifiedx = str(modifiedx)
 modifiedx = modifiedx.replace("[","")
 modifiedx = modifiedx.replace("]","")

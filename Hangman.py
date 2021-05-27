@@ -1,5 +1,6 @@
 import random
 
+
 def find_word():
     words = open('Hangman_word_list.txt', 'r')
     lines = words.readlines()

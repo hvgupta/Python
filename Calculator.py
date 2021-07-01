@@ -1,6 +1,5 @@
 #im not really sure how the functions work yet, but the next 53 lines of code saves the places of operators 
 from datetime import datetime
-startTime = datetime.now()
 def location_of_plus():
     global plusindex
     plusindex = []
@@ -12,7 +11,7 @@ def location_of_plus():
     del i
 
 
-def location_of_operator(optype):
+def operation_locator(optype):
     global operator_index
     operator_index = []
     Index = 0
@@ -93,7 +92,7 @@ def Truemaker():
 x = input("Your input can include operations too like '( x + y ) ( x * y ) - ( z / a ) + ( x ^ 2 )'\n")
 modifiedx = []
 oldx = []
-start1 = datetime.now() - startTime
+start1 = datetime.now()
 for i in x.split(' '):
     try:
         j = float(i)
@@ -116,8 +115,8 @@ while len(modifiedx) != 1:
 
         location_of_bracket()
 
-        if len(location_of_operator("^")) == 0 and '^' in modifiedx and len(backwardbracketindex) == 0 and repeatedpower == True or '^' in modifiedx and repeatedpower == True and modifiedx.index(')') > modifiedx.index('^') or oldx != modifiedx and '^' in modifiedx and repeatedpower == True and modifiedx.index(')') > modifiedx.index('^'):
-            location_of_operator('^')
+        if len(operation_locator("^")) == 0 and '^' in modifiedx and len(backwardbracketindex) == 0 and repeatedpower == True or '^' in modifiedx and repeatedpower == True and modifiedx.index(')') > modifiedx.index('^') or oldx != modifiedx and '^' in modifiedx and repeatedpower == True and modifiedx.index(')') > modifiedx.index('^'):
+            operation_locator('^')
             location_of_bracket()
             repeatedpower = False
 
@@ -138,8 +137,8 @@ while len(modifiedx) != 1:
                 counter = counter + 2
         
 
-        elif len(location_of_operator("*")) == 0 and '*' in modifiedx and len(backwardbracketindex) == 0 and repeatedmultiply == True or '*' in modifiedx and repeatedmultiply == True and modifiedx.index(')') > modifiedx.index('*') or oldx != modifiedx and '*' in modifiedx and repeatedmultiply == True and modifiedx.index(')') > modifiedx.index('*'):
-            location_of_operator("*")
+        elif len(operation_locator("*")) == 0 and '*' in modifiedx and len(backwardbracketindex) == 0 and repeatedmultiply == True or '*' in modifiedx and repeatedmultiply == True and modifiedx.index(')') > modifiedx.index('*') or oldx != modifiedx and '*' in modifiedx and repeatedmultiply == True and modifiedx.index(')') > modifiedx.index('*'):
+            operation_locator("*")
             location_of_bracket()
             repeatedmultiply = False
 
@@ -159,8 +158,8 @@ while len(modifiedx) != 1:
                     counter = counter + 2
                 counter = counter + 2
         
-        elif len(location_of_operator("/")) == 0 and '/' in modifiedx and len(backwardbracketindex) == 0 and repeateddivide == True or '/' in modifiedx and repeateddivide == True and modifiedx.index(')') > modifiedx.index('/') or oldx != modifiedx and '/' in modifiedx and repeateddivide == True and modifiedx.index(')') > modifiedx.index('/'):
-            location_of_operator('/')
+        elif len(operation_locator("/")) == 0 and '/' in modifiedx and len(backwardbracketindex) == 0 and repeateddivide == True or '/' in modifiedx and repeateddivide == True and modifiedx.index(')') > modifiedx.index('/') or oldx != modifiedx and '/' in modifiedx and repeateddivide == True and modifiedx.index(')') > modifiedx.index('/'):
+            operation_locator('/')
             location_of_bracket()
             repeateddivide = False
 
@@ -180,8 +179,8 @@ while len(modifiedx) != 1:
                     counter = counter + 2
                 counter = counter + 2
 
-        elif len(location_of_operator("+")) == 0 and '+' in modifiedx and len(backwardbracketindex) == 0 and repeatedadd == True or '+' in modifiedx and repeatedadd == True and modifiedx.index(')') > modifiedx.index('+') or oldx != modifiedx and '+' in modifiedx and repeatedadd == True and modifiedx.index(')') > modifiedx.index('+'):
-            location_of_operator("+")
+        elif len(operation_locator("+")) == 0 and '+' in modifiedx and len(backwardbracketindex) == 0 and repeatedadd == True or '+' in modifiedx and repeatedadd == True and modifiedx.index(')') > modifiedx.index('+') or oldx != modifiedx and '+' in modifiedx and repeatedadd == True and modifiedx.index(')') > modifiedx.index('+'):
+            operation_locator("+")
             location_of_bracket()
             repeatedadd = False
 
@@ -201,8 +200,8 @@ while len(modifiedx) != 1:
                     counter = counter + 2
                 counter = counter + 2
         
-        elif len(location_of_operator("-")) == 0 and '-' in modifiedx and len(backwardbracketindex) == 0 and repeatedminus == True or '-' in modifiedx and repeatedminus == True and modifiedx.index(')') > modifiedx.index('-') or oldx != modifiedx and '-' in modifiedx and repeatedminus == True and modifiedx.index(')') > modifiedx.index('-'):
-            location_of_operator("-")
+        elif len(operation_locator("-")) == 0 and '-' in modifiedx and len(backwardbracketindex) == 0 and repeatedminus == True or '-' in modifiedx and repeatedminus == True and modifiedx.index(')') > modifiedx.index('-') or oldx != modifiedx and '-' in modifiedx and repeatedminus == True and modifiedx.index(')') > modifiedx.index('-'):
+            operation_locator("-")
             location_of_bracket()
             repeatedminus = False
 
@@ -227,5 +226,5 @@ modifiedx = str(modifiedx)
 modifiedx = modifiedx.replace("[","")
 modifiedx = modifiedx.replace("]","")
 print(modifiedx)
-end1 = datetime.now() - startTime
+end1 = datetime.now()
 print(end1 - start1)

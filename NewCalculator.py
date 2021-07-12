@@ -42,8 +42,9 @@ class calculator:
             del modifiedx[a]
             del modifiedx[a-2]
 
-counter = -1
-while not counter == "z" and x.lower() == "off":
+x = "placeholder"
+
+while x.lower() != "off":
     modifiedx=[]
     try:
         Ans = pickle.load(open("Ans","rb"))[0]
@@ -56,6 +57,7 @@ while not counter == "z" and x.lower() == "off":
         break
     num=''
     temp = []
+    counter = -1
     for i in [i for i in x]:
         if i.isnumeric() == True or i == ".":
             num += i

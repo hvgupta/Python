@@ -14,7 +14,8 @@ class calculator:
         if (operator1 in modifiedx and operator2 in modifiedx and not modifiedx[modifiedx.index(operator1) - 1] == ")" and not modifiedx[modifiedx.index(operator1) + 1] == "(" and modifiedx.index(operator1)< modifiedx.index(operator2) and counter == 0 
         or operator1 in modifiedx and not modifiedx[modifiedx.index(operator1) - 1] == ")" and not modifiedx[modifiedx.index(operator1) + 1] == "(" and not modifiedx[modifiedx.index(operator1) - 1] == ")" and not modifiedx[modifiedx.index(operator1) + 1] == "(" and counter==0 
         or operator1 in modifiedx and operator2 in modifiedx and modifiedx.index(operator1)< modifiedx.index(operator2) and not modifiedx[modifiedx.index(operator1) - 1] == ")" and not modifiedx[modifiedx.index(operator1) + 1] == "(" and counter == 0 
-        or operator1 in modifiedx and counter == 0 and not operator2 in modifiedx and not modifiedx[modifiedx.index(operator1) - 1] == ")" and not modifiedx[modifiedx.index(operator1) + 1] == "("):
+        or operator1 in modifiedx and counter == 0 and not operator2 in modifiedx and not modifiedx[modifiedx.index(operator1) - 1] == ")" and not modifiedx[modifiedx.index(operator1) + 1] == "(" 
+        or operator1 == "^"):   
             allow = True
         else:
             allow = False
@@ -22,25 +23,25 @@ class calculator:
 
     def CalculatorBody(modifiedx:list, opeator_locator:list, operationType:str, counter:int):
         for a in opeator_locator:
-            if operationType == "^":
-                ans = float(modifiedx[a-1] ** modifiedx[a+1])
-            elif operationType == "*":
-                ans = float(modifiedx[a-1] * modifiedx[a+1])
-            elif operationType == "/":
-                ans = float(modifiedx[a-1] / modifiedx[a+1])
-            elif operationType == "+":
-                ans = float(modifiedx[a-1] + modifiedx[a+1])
-            elif operationType == "-":
-                ans = float(modifiedx[a-1] - modifiedx[a+1])
-            counter = 1
-            break
+            if operationType == "^" and calculator.comparer("^","", modifiedx, counter) == True:
+                ans = float(modifiedx[a-1-counter] ** modifiedx[a+1-counter])
+            elif operationType == "*" and calculator.comparer("*","/", modifiedx, counter) == True:
+                ans = float(modifiedx[a-1-counter] * modifiedx[a+1-counter])
+            elif operationType == "/" and calculator.comparer("/","*", modifiedx, counter) == True:
+                ans = float(modifiedx[a-1-counter] / modifiedx[a+1-counter])
+            elif operationType == "+" and calculator.comparer("+","-", modifiedx, counter) == True:
+                ans = float(modifiedx[a-1-counter] + modifiedx[a+1-counter])
+            elif operationType == "-" and calculator.comparer("-","+", modifiedx, counter) == True:
+                ans = float(modifiedx[a-1-counter] - modifiedx[a+1-counter])
+            modifiedx[a-counter] = ans
+            del modifiedx[a-1-counter]
+            del modifiedx[a-counter]
+            counter +=2
+            if modifiedx[a-counter] == "(" and modifiedx[a + 2-counter] == ")":
+                del modifiedx[a]
+                del modifiedx[a-2]
+                counter +=2
         counter = 0
-        modifiedx[a] = ans
-        del modifiedx[a-1]
-        del modifiedx[a]
-        if modifiedx[a-2] == "(" and modifiedx[a] == ")":
-            del modifiedx[a]
-            del modifiedx[a-2]
 
 x = "placeholder"
 
@@ -51,7 +52,7 @@ while x.lower() != "off":
         x = input("You have an answer stored in this Calculator, to use it use 'ans' or 'Ans or if you want to turn off the calculator then type 'off' \n")
         x = x.replace("ans",str(Ans))
     except:
-        x = input("Your input can include operations too like '( x + y ) ( x * y ) - ( z / a ) + ( x ^ 2 )'\n")
+        x = input("Your input can include operations too like '(x+y)(x*y)-(z/a)+(x^2)'\n")
 
     if x.lower() == "off":
         break
@@ -87,7 +88,7 @@ while x.lower() != "off":
     for a in location_of_fbracket:
         if a - 1 in location_of_bbracket and a + 2 in location_of_bbracket or a - 1 in location_of_bbracket and not a + 2 in location_of_bbracket and a - 2 in location_of_fbracket:
             modifiedx.insert(a-counter,"*")
-            del modifiedx[a-1-counter]
+            del modifiedx[a-1-counter-counter]
             del modifiedx[a-counter]
             counter =+ 1
         elif a - 1 in location_of_bbracket and not a + 2 in location_of_bbracket and not a - 2 in location_of_bbracket:
@@ -98,20 +99,15 @@ while x.lower() != "off":
 
     while len(modifiedx) != 1:
 
-        if calculator.comparer("^", "", modifiedx, counter) == True:
-            calculator.CalculatorBody(modifiedx,calculator.location_of_operator("^"),"^",counter)
+        calculator.CalculatorBody(modifiedx,calculator.location_of_operator("^"),"^",counter)
 
-        if calculator.comparer("*","/", modifiedx, counter) == True:
-            calculator.CalculatorBody(modifiedx,calculator.location_of_operator("*"),"*",counter)
+        calculator.CalculatorBody(modifiedx,calculator.location_of_operator("*"),"*",counter)
 
-        if calculator.comparer("/","*", modifiedx, counter) == True:
-            calculator.CalculatorBody(modifiedx,calculator.location_of_operator("/"),"/",counter)      
+        calculator.CalculatorBody(modifiedx,calculator.location_of_operator("/"),"/",counter)      
         
-        if calculator.comparer("+","-", modifiedx, counter) == True:
-            calculator.CalculatorBody(modifiedx,calculator.location_of_operator("+"),"+",counter)
+        calculator.CalculatorBody(modifiedx,calculator.location_of_operator("+"),"+",counter)
 
-        if calculator.comparer("-","+", modifiedx, counter) == True:
-            calculator.CalculatorBody(modifiedx,calculator.location_of_operator("-"),"-",counter)
+        calculator.CalculatorBody(modifiedx,calculator.location_of_operator("-"),"-",counter)
 
     pickle.dump(modifiedx,open("Ans","wb"))
     print(modifiedx[0])

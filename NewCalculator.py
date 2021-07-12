@@ -1,6 +1,4 @@
 import pickle
-from datetime import datetime
-start1 = datetime.now()
  
 class calculator:
     def location_of_operator(operatorType):
@@ -44,9 +42,8 @@ class calculator:
             del modifiedx[a]
             del modifiedx[a-2]
 
-x = "placeholder"
-
-while x.lower() != "off":
+counter = -1
+while not counter == "z" and x.lower() == "off":
     modifiedx=[]
     try:
         Ans = pickle.load(open("Ans","rb"))[0]
@@ -59,32 +56,34 @@ while x.lower() != "off":
         break
     num=''
     temp = []
-    count = -1
     for i in [i for i in x]:
-        if i.isnumeric() == True:
+        if i.isnumeric() == True or i == ".":
             num += i
             temp.append(num)
-            count += 1
+            counter += 1
         else:
-            if count >= 0:
-                modifiedx.append(float(temp[count]))        
+            if counter >= 0:
+                modifiedx.append(float(temp[counter]))
+                counter = -1
+                temp =[]        
             modifiedx.append(i)
             num = ''
-        if not num == "":
-            modifiedx.append(float(temp[count]))
-        break
+    if not len(temp) == 0:
+        modifiedx.append(float(temp[counter]))
+        temp = []
 
+    for i in calculator.location_of_operator("-"):
+        if i - 1 in calculator.location_of_operator("^") or i - 1 in calculator.location_of_operator("*") or i - 1 in calculator.location_of_operator("/"):
+            modifiedx.insert(i,0)
+            modifiedx.insert(i,"(")
+            modifiedx.insert(i+5,")")
+    
     counter = 0
     location_of_fbracket=calculator.location_of_operator("(")
     location_of_bbracket=calculator.location_of_operator(")")
 
     for a in location_of_fbracket:
-        if a - 1 in location_of_bbracket and a + 2 in location_of_bbracket:
-            modifiedx.insert(a-counter,"*")
-            del modifiedx[a-1-counter]
-            del modifiedx[a-counter]
-            counter =+ 1 
-        elif a - 1 in location_of_bbracket and not a + 2 in location_of_bbracket and a - 2 in location_of_fbracket:
+        if a - 1 in location_of_bbracket and a + 2 in location_of_bbracket or a - 1 in location_of_bbracket and not a + 2 in location_of_bbracket and a - 2 in location_of_fbracket:
             modifiedx.insert(a-counter,"*")
             del modifiedx[a-1-counter]
             del modifiedx[a-counter]
@@ -113,6 +112,4 @@ while x.lower() != "off":
             calculator.CalculatorBody(modifiedx,calculator.location_of_operator("-"),"-",counter)
 
     pickle.dump(modifiedx,open("Ans","wb"))
-    end1 = datetime.now()
     print(modifiedx[0])
-    print(end1-start1)

@@ -1,3 +1,5 @@
+#before running the code, make sure to install the "youtubesearchpython" and "pafy"
+
 from youtubesearchpython import VideosSearch
 import pafy
 
